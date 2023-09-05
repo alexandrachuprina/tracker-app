@@ -1,12 +1,13 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Calendar from "../components/Calendar/Calendar";
 
 type Props = {};
 
 const Home: FC<Props> = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
   return (
     <div>
-      <Calendar />
+      <Calendar date={currentDate} setDate={setCurrentDate} />
     </div>
   );
 };

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { FC, ReactNode } from "react";
 
-const Cell = () => {
-  return (
-    <div>Cell</div>
-  )
+interface CellProps {
+  children: ReactNode;
 }
 
-export default Cell
+const Cell: FC<CellProps> = ({ children }) => {
+  return <div>{children}</div>;
+};
+
+export default Cell;
