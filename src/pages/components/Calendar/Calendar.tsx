@@ -1,8 +1,16 @@
 import React, { FC } from "react";
-import { format, sub, add } from "date-fns";
+import {
+  format,
+  sub,
+  add,
+  startOfMonth,
+  endOfMonth,
+  differenceInDays,
+} from "date-fns";
 
 import Cell from "../Cell/Cell";
 import { daysOfWeek } from "./daysOfWeek";
+import styles from "./Calendar.module.scss";
 
 interface CalenderProps {
   date: Date;
@@ -10,6 +18,14 @@ interface CalenderProps {
 }
 
 const Calendar: FC<CalenderProps> = ({ date, setDate }) => {
+  const monthStart = startOfMonth(date);
+  const monthEnd = endOfMonth(date);
+  const monthDays = differenceInDays(monthEnd, monthStart) + 1;
+  // console.log(monthDays)
+
+  const prefixDays = monthStart.getDay();
+  const suffixDays = 7 - monthEnd.getDay();
+
   const setNextMonth = () => {
     setDate(add(date, { months: 1 }));
   };
@@ -36,9 +52,24 @@ const Calendar: FC<CalenderProps> = ({ date, setDate }) => {
 
       <button onClick={setCurrentDate}>today</button>
 
-      {daysOfWeek.map((day) => (
-        <Cell children={day.name} key={day.id} />
-      ))}
+      <div className={styles.grid}>
+        {daysOfWeek.map((day) => (
+          <Cell children={day.name} key={day.id} />
+        ))}
+
+        {Array.from({ length: prefixDays - 1 }).map((day, i) => (
+          <Cell key={i} />
+        ))}
+
+        {Array.from({ length: monthDays }).map((day, i) => {
+          const date = i + 1;
+          return <Cell key={date} children={date} />;
+        })}
+
+        {Array.from({ length: suffixDays }).map((day, i) => (
+          <Cell key={i} />
+        ))}
+      </div>
     </div>
   );
 };
